@@ -4,9 +4,9 @@
 const gameArea = document.querySelector('#gamearea');
 const enterprise = 'images/enterprise.png';
 const warbird = 'images/warbird.png';
-const warbirdFleet =    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-                        12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-                        24, 25, 26, 27, 28, 29, 30, 31, 32, 33];
+const warbirdFleet = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                    [12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+                    [24, 25, 26, 27, 28, 29, 30, 31, 32, 33]];
 let fleetIndex = 0;
 let entLocation = 197;
 let direction = 1;
@@ -33,12 +33,14 @@ function generateEnterprise(){
 
 function generateRomulans(){
     const fleetLocation = document.querySelectorAll('#gamearea div');
-    warbirdFleet.forEach(coordinates => {   
-        const newWarbird = document.createElement('img');
-        newWarbird.setAttribute('src', warbird);
-        fleetLocation[coordinates + fleetIndex].appendChild(newWarbird);
-        fleetLocation[coordinates + fleetIndex].classList.add('warbird');
-    })
+    warbirdFleet.forEach(rows => {   
+        rows.forEach(row => {
+            const newWarbird = document.createElement('img');
+            newWarbird.setAttribute('src', warbird);
+            fleetLocation[row + fleetIndex].appendChild(newWarbird);
+            fleetLocation[row + fleetIndex].classList.add('warbird');
+        });
+    });
 }
 
 function clearRomulans(){
@@ -53,14 +55,19 @@ function clearRomulans(){
 
 function moveRomulans(){
     fleetIndex += direction;
-    if((warbirdFleet[9] + fleetIndex + 1) % 12 !== 0){
-        generateRomulans();
-    }
-    else if((warbirdFleet[9] + fleetIndex + 1) % 12 === 0){
-        fleetIndex + 11;
-        direction = direction * -1;
-        generateRomulans();
-    }
+    warbirdFleet.forEach(rows => {
+        rows.forEach(row => {
+            if((warbirdFleet[warbirdFleet.length - 1]) % 12 !== 0){
+                fleetIndex += direction;
+                generateRomulans();
+            }
+            // else if((warbirdFleet[9] + fleetIndex + 1) % 12 === 0){
+            //     fleetIndex + 11;
+            //     direction = direction * -1;
+            //     generateRomulans();
+            // }
+        })
+    })
 }
 
 function gameTurn(){
