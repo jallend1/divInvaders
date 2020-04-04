@@ -1,0 +1,19 @@
+h1{
+    text-align: center;
+}
+
+#gamearea{
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid black;
+    width: 480px;
+    margin: auto;
+}
+
+.gamecell{
+    width: 40px;
+}
+
+.enterprise{
+    width: 40px;
+}
