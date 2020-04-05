@@ -57,15 +57,7 @@ function moveRomulans(){
     fleetIndex += direction;
     warbirdFleet.forEach(rows => {
         rows.forEach(row => {
-            if((warbirdFleet[warbirdFleet.length - 1]) % 12 !== 0){
-                fleetIndex += direction;
-                generateRomulans();
-            }
-            // else if((warbirdFleet[9] + fleetIndex + 1) % 12 === 0){
-            //     fleetIndex + 11;
-            //     direction = direction * -1;
-            //     generateRomulans();
-            // }
+            
         })
     })
 }
