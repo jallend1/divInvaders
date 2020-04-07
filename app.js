@@ -54,10 +54,11 @@ function clearRomulans(){
 }
 
 function moveRomulans(){
+    const fleetLocation = document.querySelectorAll('#gamearea div');
     fleetIndex += direction;
     warbirdFleet.forEach(rows => {
-        rows.forEach(row => {
-            
+        rows.forEach(warbird => {
+            fleetLocation[warbird +]
         })
     })
 }

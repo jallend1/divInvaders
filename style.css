@@ -3,17 +3,28 @@ h1{
 }
 
 #gamearea{
-    display: flex;
-    flex-wrap: wrap;
-    border: 1px solid black;
-    width: 480px;
+    width: 800px;
+    height: 600px;
     margin: auto;
+    background: url('images/background-dark-purple.png');
+    animation: starsMove 2s linear infinite;
 }
 
-.gamecell{
-    width: 40px;
+@keyframes starsMove {
+    from  { background-position-y: 0px; }
+    to    { background-position-y: 256px; }
+  }
+
+.player{
+    max-width: 80px;
+    margin-left: -40px;            /* Lets me manipulate the ship from the center */
+    position: absolute;
 }
 
-.enterprise{
-    width: 40px;
+.laser{
+    position: absolute;
+}
+
+#details{
+    text-align: center;
 }
