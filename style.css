@@ -13,11 +13,6 @@ h1{
     flex-wrap: wrap;
     margin: auto;
     border: solid 1px;
-    /* width: 800px;
-    height: 600px; */
-    /* position: relative; */
-    /* background: url('images/background-dark-purple.png');
-    animation: starsMove 2s linear infinite; */
 }
 
 .cell{
@@ -26,11 +21,11 @@ h1{
     height: 20px;
 }
 
-.shooter{
+.player{
     background-color: blue;
 }
 
-.invader{
+.alien{
     background-color: purple;
     border-radius: 10px;
 }
