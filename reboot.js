@@ -8,8 +8,6 @@ const aliens = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
                 30, 31, 32, 33, 34, 35, 36, 37, 38, 39];
 const lasers = [];
 
-
-
 function gameOver(){
     cells.forEach(cell => {
         if(cell.classList.contains('player') && cell.classList.contains('alien')){              // Ends game if player and aliens collide
@@ -81,18 +79,30 @@ function movePlayer(e){
 
 function update(){
     moveAliens();
+    updateLasers();
     gameOver();
 }
 
 function updateLasers(){
+    let offScreen = false;
+    cells.forEach(cell => cell.classList.remove('laser'));
     for(let i = 0; i < lasers.length; i++){
-        cells[lasers[i]].classList.remove('laser');
         lasers[i] -= gameSize;
     }
-    lasers.forEach((laser) => {
+    lasers.forEach(laser => {
+        if(cells[laser]){                                       //If the cell exists
+            if(cells[laser].classList.contains('alien')){
+                cells[laser].classList.add('boom');
+                setTimeout(() => cells[laser].classList.remove('boom'), 1000)
+            }
             cells[laser].classList.add('laser');
-            cells[laser-gameSize].classList.remove('laser');
-        })
+        }else{
+            offScreen = true;
+        }        
+    })
+    if(offScreen){                                              // Removes lasers that have traeled off-screen
+        lasers.shift();
+    }
 }
 
 init();

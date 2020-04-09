@@ -16,7 +16,6 @@ h1{
 }
 
 .cell{
-    /* background-color: red; */
     width: 20px;
     height: 20px;
 }
@@ -37,21 +36,7 @@ h1{
 .laser{
     background-color: yellow;
 }
-/* @keyframes starsMove {
-    from  { background-position-y: 0px; }
-    to    { background-position-y: 256px; }
-  } */
 
-/* .player{
-    max-width: 80px;
-    margin-left: -40px;            /* Lets me manipulate the ship from the center */
-    /* position: absolute;
+.dead{
+
 }
-
-.phaser{
-    position: absolute;
-}
-
-#details{
-    text-align: center;
-} */ */
