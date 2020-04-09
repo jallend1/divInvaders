@@ -37,12 +37,13 @@ function buttonReleased(e){
     }
 }
 
-function createLasers(x){
-    const $laser = document.createElement('img');
-    $laser.src = 'images/phaser.png';
-    $laser.classList.add('laser');
-    $gameArea.appendChild($laser);
-    placeElement($laser, x, (height - gameStatus.playerHeight * 2 ) );  
+function createPhasers(x){
+    const $phaser = document.createElement('img');
+    $phaser.src = 'images/phaser.png';
+    $phaser.classList.add('phaser');
+    $gameArea.appendChild($phaser);
+    $phaser.style.transform = (`translate(${gameStatus.playerX}px, 500px)`);
+    // placeElement($phaser, x, (height - 500 ) );  
 }
 
 function createPlayer(){
@@ -70,13 +71,13 @@ function handleMovement(){
         }
     }
     if(gameStatus.spaceBar){
-        createLasers(gameStatus.playerX);
+        createPhasers(gameStatus.playerX);
     }
 }
 
-function moveLasers(){
-    const $lasers = document.querySelectorAll('.laser');
-    $lasers.forEach(laser => placeElement(laser, laser.x, laser.y - speed));
+function movePhasers(){
+    const $phasers = document.querySelectorAll('.phaser');
+    $phasers.forEach(phaser => placeElement(phaser, phaser.x, phaser.y - speed));
 }
 
 function placeElement($element, x, y){
@@ -87,7 +88,7 @@ function update(){
     const $enterprise = document.querySelector('.player');
     handleMovement();
     placeElement($enterprise, gameStatus.playerX, gameStatus.playerY);
-    moveLasers();  
+    movePhasers();  
     window.requestAnimationFrame(update);
 }
 
