@@ -1,4 +1,6 @@
 const gameArea = document.querySelector('#gamearea');
+const scoreBox = document.querySelector('#score');
+const gameStatus = document.querySelector('#gamestatus');
 const gameSize = 15;
 const cells = generateBoard();
 let playerPosition = 202;
@@ -7,18 +9,19 @@ const aliens = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
                 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
                 30, 31, 32, 33, 34, 35, 36, 37, 38, 39];
 const lasers = [];
+let score = 0;
 
 function gameOver(){
     cells.forEach(cell => {
         if(cell.classList.contains('player') && cell.classList.contains('alien')){              // Ends game if player and aliens collide
-            console.log('LOSER');
             clearInterval(gameProgress);
+            gameStatus.textContent = 'Game Over, Man.'
         }
     })
     aliens.forEach(alien => {
         if(alien > (gameSize * gameSize) - (gameSize * 2)){
-            console.log('LOSER AGAIN');
             clearInterval(gameProgress);
+            gameStatus.textContent = 'Game Over, Man.'
         }
     })
 }
@@ -33,8 +36,14 @@ function generateBoard(){
 }
 
 function generateAliens(){
-    aliens.forEach(alien => {
-        cells[alien].classList.add('alien')
+    aliens.forEach((alien, index) => {
+        if(cells[alien].classList.contains('laser')){                                   // If the square with an alien also has a laser, boom
+            cells[alien].classList.add('boom');
+            aliens.splice(index, 1);                                                    // Removes this alien from the array
+            setTimeout(() => cells[alien].classList.remove('boom'), 250)
+        }else{
+            cells[alien].classList.add('alien')
+        }
     });
 }
 
@@ -54,12 +63,11 @@ function moveAliens(){
         for(let i = 0; i < aliens.length; i++){
             aliens[i] += direction;
         }
-    }else{
+    }else{                                                                      // If on an edge, moves them down a row and reverses direction
         for(let i = 0; i < aliens.length; i++){
             aliens[i] += gameSize;
         }
         direction = direction * -1;
-        
     }
     generateAliens();
 }
@@ -80,32 +88,30 @@ function movePlayer(e){
 function update(){
     moveAliens();
     updateLasers();
+    scoreBox.textContent = score;
     gameOver();
 }
 
 function updateLasers(){
-    let offScreen = false;
+    cells.forEach((cell, index) => {
+        if (cell.classList.contains('boom')){                   // If laser hits alien, adds to score and removes laser
+            let explodedLaser = lasers.indexOf(index);
+            lasers.splice(explodedLaser, 1);                        
+            score++;
+        }
+    })
     cells.forEach(cell => cell.classList.remove('laser'));
     for(let i = 0; i < lasers.length; i++){
         lasers[i] -= gameSize;
     }
-    lasers.forEach(laser => {
+    lasers.forEach((laser, index) => {
         if(cells[laser]){                                       //If the cell exists
-            if(cells[laser].classList.contains('alien')){
-                cells[laser].classList.add('boom');
-                setTimeout(() => cells[laser].classList.remove('boom'), 1000)
-            }
             cells[laser].classList.add('laser');
         }else{
-            offScreen = true;
+            lasers.splice(index, 1);
         }        
     })
-    if(offScreen){                                              // Removes lasers that have traeled off-screen
-        lasers.shift();
-    }
 }
-
-init();
 
 window.addEventListener('keydown', e => {
     if(e.keyCode === 37 || e.keyCode === 39){
@@ -117,4 +123,5 @@ window.addEventListener('keydown', e => {
     }
 });
 
+init();
 const gameProgress = setInterval(update, 500);
