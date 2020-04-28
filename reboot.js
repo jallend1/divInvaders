@@ -1,3 +1,5 @@
+// Preserving my original to start fresh
+
 const gameArea = document.querySelector('#gamearea');
 const scoreBox = document.querySelector('#score');
 const gameStatus = document.querySelector('#gamestatus');
