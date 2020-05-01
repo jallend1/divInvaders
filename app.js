@@ -17,18 +17,19 @@ function checkPlayerBoundaries(){                                     // Keeps p
 }
 
 function determineDirection(){
-    if(aliens.some(alien => (alien + 1) % gameSize === 0)){
-        alienDirection = -1;
-        for(let i = 0; i < aliens.length; i++){
-            aliens[i] += gameSize;
-        }
-    }
-    else if(aliens.some(alien => alien % gameSize === 0)){
-        alienDirection = 1;
-        for(let i = 0; i < aliens.length; i++){
-            aliens[i] += gameSize;
-        }
-    }
+    console.log('hello');
+    // if(aliens.some(alien => (alien + 1) % gameSize === 0)){
+    //     alienDirection = -1;
+    //     for(let i = 0; i < aliens.length; i++){
+    //         aliens[i] += gameSize;
+    //     }
+    // }
+    // else if(aliens.some(alien => alien % gameSize === 0)){
+    //     alienDirection = 1;
+    //     for(let i = 0; i < aliens.length; i++){
+    //         aliens[i] += gameSize;
+    //     }
+    // }
 }
 
 function generateBoard(){                                       // Generates divs inside of game area
@@ -43,11 +44,17 @@ function generateBoard(){                                       // Generates div
 function positionAliens(){
     const gameBoard = document.querySelectorAll('.cell');
     gameBoard.forEach(cell => cell.classList.remove('alien'));          // Removes previous alien locations
-    for(let i = 0; i < aliens.length; i++){
-        aliens[i] += alienDirection;
+    if(aliens.some(alien => alien % (gameSize - 1) === 0)){
+        for(let i = 0; i < aliens.length; i++){
+            aliens[i] += gameSize;
+        }
+    }else{
+        for(let i = 0; i < aliens.length; i++){
+            aliens[i] += alienDirection;
+        }
     }
     aliens.forEach(alien => gameBoard[alien].classList.add('alien'));
-    determineDirection();                                               // Makes sure aliens are inside game area
+    // determineDirection();                                               // Makes sure aliens are inside game area
 }
 
 function positionPlayer(){
@@ -65,9 +72,17 @@ function gameTurn(){
     determineDirection();
 }
 
-generateBoard();
-positionPlayer();
-positionAliens();
+function init(){
+    generateBoard();
+    positionPlayer();
+    const gameBoard  = document.querySelectorAll('.cell');
+    aliens.forEach(alien => gameBoard[alien].classList.add('alien'));
+}
+
+init();
+
+const eachTurn = setInterval(gameTurn, 500);
+
 
 
 window.addEventListener('keydown', e => {
