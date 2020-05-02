@@ -5,9 +5,11 @@ let playerDirection = 0;
 let alienDirection = 1;
 let moveRight = true;
 const aliens = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-                15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
-                30, 31, 32, 33, 34, 35, 36, 37, 38, 39];
-                
+    15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+    30, 31, 32, 33, 34, 35, 36, 37, 38, 39];
+const lasers = [];
+let deadLasers = 0;
+    
 function checkAlienBoundaries(){
     if(alienDirection === 0){                                           // If this is the first time on this row, change the direction value
         moveRight ? alienDirection = 1 : alienDirection = -1;
@@ -37,6 +39,15 @@ function checkPlayerBoundaries(){                                     // Keeps p
     else if(playerPosition < (gameSize * gameSize) - gameSize){
         playerPosition = (gameSize * gameSize) - gameSize;
     }
+}
+
+function fireLasers(){
+    const gameArea = document.querySelectorAll('.cell');
+    gameArea.forEach((cell, index) => {
+        if(cell.classList.contains('player')){
+            lasers.push(index);
+        }
+    });
 }
 
 function gameOver(){
@@ -72,9 +83,28 @@ function positionPlayer(){
     playerDirection = 0;
 }
 
+function updateLasers(){
+    if(lasers.length > 0){
+        const gameArea = document.querySelectorAll('.cell');
+        lasers.forEach(laser => gameArea[laser].classList.remove('laser'));           // Removes all existing lasers
+        lasers.forEach(laser => {                                                    // Counts the number of lasers to be removed
+            if(laser < gameSize){
+                deadLasers++; 
+            }
+        })
+        lasers.splice(0, deadLasers);                                               // Removes the dead lasers
+        for(let i = 0; i < lasers.length; i++){                                     // Defines new laser locations
+            lasers[i] -= gameSize;
+        }
+        lasers.forEach(laser => gameArea[laser].classList.add('laser'));
+        deadLasers = 0;                                                             // Resets the dead laser tracker
+    }   
+}
+
 function gameTurn(){
     positionPlayer();
     positionAliens();
+    updateLasers();
     if(aliens.some(alien => alien >= gameSize * gameSize - gameSize)){
         gameOver();
     }
@@ -99,5 +129,8 @@ window.addEventListener('keydown', e => {
     if(e.keyCode === 39){
         playerDirection = 1;
         positionPlayer();
+    }
+    if(e.keyCode === 32){
+        fireLasers();
     }
 });
