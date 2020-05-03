@@ -32,6 +32,22 @@ function checkAlienBoundaries(){
         }
 }
 
+function checkContact(){
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach((cell, index) => {
+        if(cell.classList.contains('alien') && cell.classList.contains('laser')){
+            cell.classList.remove('alien');
+            cell.classList.remove('laser');
+            cell.classList.add('boom');
+            setTimeout(() => cell.classList.remove('boom'), 250);
+            const deadAlien = aliens.indexOf(index);
+            const deadLaser = lasers.indexOf(index);
+            aliens.splice(deadAlien, 1);
+            lasers.splice(deadLaser, 1);
+        }
+    });
+}
+
 function checkPlayerBoundaries(){                                     // Keeps player on last row
     if(playerPosition > (gameSize * gameSize) - 1){
         playerPosition = (gameSize * gameSize) - 1;
@@ -39,6 +55,16 @@ function checkPlayerBoundaries(){                                     // Keeps p
     else if(playerPosition < (gameSize * gameSize) - gameSize){
         playerPosition = (gameSize * gameSize) - gameSize;
     }
+}
+
+function clearDeadLasers(){
+    lasers.forEach(laser => {                                                    // Counts the number of lasers to be removed
+        if(laser < gameSize){
+            deadLasers++; 
+        }
+    })
+    lasers.splice(0, deadLasers);                                               // Removes the dead lasers
+    deadLasers = 0;
 }
 
 function fireLasers(){
@@ -83,16 +109,6 @@ function positionPlayer(){
     playerDirection = 0;
 }
 
-function clearDeadLasers(){
-    lasers.forEach(laser => {                                                    // Counts the number of lasers to be removed
-        if(laser < gameSize){
-            deadLasers++; 
-        }
-    })
-    lasers.splice(0, deadLasers);                                               // Removes the dead lasers
-    deadLasers = 0;
-}
-
 function updateLasers(){
     if(lasers.length > 0){
         const gameArea = document.querySelectorAll('.cell');
@@ -109,6 +125,7 @@ function gameTurn(){
     positionPlayer();
     positionAliens();
     updateLasers();
+    checkContact();
     if(aliens.some(alien => alien >= gameSize * gameSize - gameSize)){
         gameOver();
     }
