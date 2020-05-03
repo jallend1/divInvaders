@@ -83,21 +83,25 @@ function positionPlayer(){
     playerDirection = 0;
 }
 
+function clearDeadLasers(){
+    lasers.forEach(laser => {                                                    // Counts the number of lasers to be removed
+        if(laser < gameSize){
+            deadLasers++; 
+        }
+    })
+    lasers.splice(0, deadLasers);                                               // Removes the dead lasers
+    deadLasers = 0;
+}
+
 function updateLasers(){
     if(lasers.length > 0){
         const gameArea = document.querySelectorAll('.cell');
         lasers.forEach(laser => gameArea[laser].classList.remove('laser'));           // Removes all existing lasers
-        lasers.forEach(laser => {                                                    // Counts the number of lasers to be removed
-            if(laser < gameSize){
-                deadLasers++; 
-            }
-        })
-        lasers.splice(0, deadLasers);                                               // Removes the dead lasers
-        for(let i = 0; i < lasers.length; i++){                                     // Defines new laser locations
+        clearDeadLasers();
+        for(let i = 0; i < lasers.length; i++){                                      // Defines new laser locations
             lasers[i] -= gameSize;
         }
-        lasers.forEach(laser => gameArea[laser].classList.add('laser'));
-        deadLasers = 0;                                                             // Resets the dead laser tracker
+        lasers.forEach(laser => gameArea[laser].classList.add('laser'))
     }   
 }
 
