@@ -1,4 +1,5 @@
 const gameArea = document.querySelector('#gamearea');
+const scoreBox = document.querySelector('#score');
 const gameSize = 15;
 let playerPosition = Math.floor((gameSize * gameSize) - (gameSize / 2));
 let playerDirection = 0;
@@ -9,6 +10,7 @@ const aliens = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
     30, 31, 32, 33, 34, 35, 36, 37, 38, 39];
 const lasers = [];
 let deadLasers = 0;
+let score = 0;
     
 function checkAlienBoundaries(){
     if(alienDirection === 0){                                           // If this is the first time on this row, change the direction value
@@ -44,6 +46,7 @@ function checkContact(){
             const deadLaser = lasers.indexOf(index);
             aliens.splice(deadAlien, 1);
             lasers.splice(deadLaser, 1);
+            score++;
         }
     });
 }
@@ -126,6 +129,7 @@ function gameTurn(){
     positionAliens();
     updateLasers();
     checkContact();
+    scoreBox.textContent = score;
     if(aliens.some(alien => alien >= gameSize * gameSize - gameSize)){
         gameOver();
     }
