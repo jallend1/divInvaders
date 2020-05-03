@@ -1,5 +1,6 @@
 const gameArea = document.querySelector('#gamearea');
 const scoreBox = document.querySelector('#score');
+const gameStatus = document.querySelector('#gamestatus');
 const gameSize = 15;
 let playerPosition = Math.floor((gameSize * gameSize) - (gameSize / 2));
 let playerDirection = 0;
@@ -88,7 +89,6 @@ function generateBoard(){                                       // Generates div
     for(let i = 0; i < (gameSize * gameSize); i++){
         const newDiv = document.createElement('div');
         newDiv.className = 'cell';
-        newDiv.textContent = i;
         gameArea.appendChild(newDiv);
     }
 }
@@ -124,12 +124,19 @@ function updateLasers(){
     }   
 }
 
+function victory(){
+    gameStatus.textContent = "You've done it!";
+}
+
 function gameTurn(){
     positionPlayer();
     positionAliens();
     updateLasers();
     checkContact();
-    scoreBox.textContent = score;
+    scoreBox.textContent = `${score}`;
+    if(aliens.length === 0){
+        victory();
+    }
     if(aliens.some(alien => alien >= gameSize * gameSize - gameSize)){
         gameOver();
     }
